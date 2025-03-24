@@ -1,6 +1,8 @@
 import express from "express";
+import cors from "cors";
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
+import authRoutes from "./routes/auth.routes.js";
 
 dotenv.config();
 
@@ -8,18 +10,25 @@ const app = express();
 const PORT = 8082;
 const MONGO_URI = process.env.MONGO_URI;
 
+app.use(
+  cors({
+    origin: `http://127.0.0.1:3000`,
+    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+// Routes
+app.use("/api/v1/auth", authRoutes);
 
 const start = async () => {
   try {
     await connectDB(MONGO_URI);
     app.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}...`);
-      console.log(`Connected to DB at ${MONGO_URI}`);
+      console.log(`Connected to DB...`);
     });
   } catch (error) {
     console.log("Failed to connect to DB or start server");
