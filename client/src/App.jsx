@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Welcome from "./pages/Welcome/Welcome";
 import CreateProject from "./pages/CreateProject/CreateProject";
 import Projects from "./pages/Projects/Projects";
+import AddPodcast from "./pages/AddPodcast/AddPodcast";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const handleLogin = (userData) => {
     console.log("Logged in with:", userData);
@@ -37,8 +39,12 @@ function App() {
     };
 
     setProjects([...projects, newProject]);
-
     setCurrentPage("projects");
+  };
+
+  const handleSelectProject = (project) => {
+    setSelectedProject(project);
+    setCurrentPage("addPodcast");
   };
 
   const getRandomColor = () => {
@@ -65,8 +71,19 @@ function App() {
           <Projects
             projects={projects}
             onNewProject={() => setCurrentPage("createProject")}
+            onSelectProject={handleSelectProject}
             onLogout={handleLogout}
             onCreateProject={handleCreateProject}
+          />
+        );
+      case "addPodcast":
+        return (
+          <AddPodcast
+            projectName={
+              selectedProject ? selectedProject.name : "Sample Project"
+            }
+            onBack={() => setCurrentPage("projects")}
+            onLogout={handleLogout}
           />
         );
       default:

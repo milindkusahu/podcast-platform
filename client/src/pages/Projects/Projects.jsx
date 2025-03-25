@@ -10,6 +10,7 @@ const Projects = ({
   onLogout,
   onNewProject,
   onCreateProject,
+  onSelectProject,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,6 +27,12 @@ const Projects = ({
 
     if (onCreateProject) {
       onCreateProject(projectName);
+    }
+  };
+
+  const handleProjectClick = (project) => {
+    if (onSelectProject) {
+      onSelectProject(project);
     }
   };
 
@@ -48,7 +55,11 @@ const Projects = ({
         <div className={styles.projectsGrid}>
           {projects.length > 0 ? (
             projects.map((project) => (
-              <div key={project.id} className={styles.projectCard}>
+              <div
+                key={project.id}
+                className={styles.projectCard}
+                onClick={() => handleProjectClick(project)}
+              >
                 <div
                   className={styles.projectIcon}
                   style={{ backgroundColor: project.color }}

@@ -1,19 +1,8 @@
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .projectsGrid {
-    grid-template-columns: 1fr;
-  }
-}
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--secondary-background-color);
+  background-color: #f9f9f9;
   overflow-x: hidden;
 }
 
@@ -100,7 +89,7 @@
   justify-content: center;
   align-items: center;
   min-height: 200px;
-  background-color: var(--secondary-background-color);
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 10px;
   border: 2px dashed #ddd;
   padding: 2rem;
@@ -119,4 +108,16 @@
 .emptyStateSubtext {
   font-size: 0.9rem;
   color: #999;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .projectsGrid {
+    grid-template-columns: 1fr;
+  }
 }

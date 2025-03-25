@@ -1,0 +1,115 @@
+.pageContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.content {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.headerIcons {
+  display: flex;
+  align-items: center;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.iconButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.fileDropContainer {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.fileDropContainer:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(126, 34, 206, 0.03);
+}
+
+.dropText {
+  margin: 0;
+}
+
+.dropText h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.dropText p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.selectFileButton {
+  padding: 1.8rem 1.6rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.fileUploadContainer {
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .cardsContainer {
+    grid-template-columns: 1fr;
+  }
+}
