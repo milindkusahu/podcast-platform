@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../../components/Header/Header";
 import Button from "../../components/common/Button/Button";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
-import { AddIcon } from "../../utils/icons";
+import { PlusIcon } from "../../utils/icons";
 import styles from "./CreateProject.module.css";
 
 const CreateProject = ({ onBack, onLogout, onCreateProject }) => {
@@ -51,7 +51,7 @@ const CreateProject = ({ onBack, onLogout, onCreateProject }) => {
             <Button
               bgColor="#1F1735"
               textColor="#FFFFFF"
-              icon={<AddIcon color="white" width={16} height={16} />}
+              icon={<PlusIcon color="white" width={23} height={23} />}
               onClick={handleOpenCreateModal}
             >
               Create New Project

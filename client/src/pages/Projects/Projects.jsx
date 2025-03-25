@@ -2,16 +2,10 @@ import React, { useState } from "react";
 import Header from "../../components/Header/Header";
 import Button from "../../components/common/Button/Button";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
-import { AddIcon } from "../../utils/icons";
+import { PlusIcon } from "../../utils/icons";
 import styles from "./Projects.module.css";
 
-const Projects = ({
-  projects = [],
-  onLogout,
-  onNewProject,
-  onCreateProject,
-  onSelectProject,
-}) => {
+const Projects = ({ projects = [], onCreateProject, onSelectProject }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -38,15 +32,16 @@ const Projects = ({
 
   return (
     <div className={styles.container}>
-      <Header onLogout={onLogout} />
+      <Header />
       <main className={styles.main}>
         <div className={styles.header}>
           <h1 className={styles.title}>Projects</h1>
           <Button
             bgColor="#1F1735"
             textColor="#FFFFFF"
-            icon={<AddIcon color="white" width={16} height={16} />}
+            icon={<PlusIcon color="white" width={23} height={23} />}
             onClick={handleOpenModal}
+            className={styles.createButton}
           >
             Create New Project
           </Button>
@@ -64,7 +59,7 @@ const Projects = ({
                   className={styles.projectIcon}
                   style={{ backgroundColor: project.color }}
                 >
-                  {project.initials}
+                  <span className={styles.initials}>{project.initials}</span>
                 </div>
                 <div className={styles.projectInfo}>
                   <h3 className={styles.projectName}>{project.name}</h3>

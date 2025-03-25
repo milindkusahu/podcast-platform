@@ -57,6 +57,8 @@ const ProjectModal = ({ onClose, onSubmit }) => {
               type="submit"
               bgColor="var(--primary-color)"
               textColor="white"
+              radius="10px"
+              className={styles.createButton}
             >
               Create
             </Button>

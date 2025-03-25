@@ -24,4 +24,4 @@ dist-ssr
 *.sln
 *.sw?
 
-.examples.js
+examples.js
