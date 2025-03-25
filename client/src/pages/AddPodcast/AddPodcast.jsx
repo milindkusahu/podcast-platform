@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import PodcastSourceCard from "../../components/PodcastSourceCard/PodcastSourceCard";
-import FileUpload from "../../components/FileUpload/FileUpload";
 import RSSFeedModal from "../../components/modals/RSSFeedModal/RSSFeedModal";
 import YouTubeUploadModal from "../../components/modals/YouTubeUploadModal/YouTubeUploadModal";
 import UploadFilesModal from "../../components/modals/UploadFilesModal/UploadFilesModal";
@@ -153,15 +152,8 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
     </div>
   );
 
-  const renderFileUploadUI = () => (
-    <div className={styles.fileUploadContainer}>
-      <FileUpload
-        icon={
-          <UploadIcon width={64} height={64} color="var(--primary-color)" />
-        }
-      />
-    </div>
-  );
+  // Check if there are any files uploaded
+  const hasUploadedFiles = uploadedFiles.length > 0;
 
   return (
     <div className={styles.pageContainer}>
@@ -187,9 +179,7 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
 
         {renderSourceCards()}
 
-        {activeUploadAction === "upload" ? (
-          renderFileUploadUI()
-        ) : (
+        {!hasUploadedFiles && (
           <div className={styles.fileDropContainer}>
             <UploadIcon width={100} height={100} color="var(--primary-color)" />
             <div className={styles.dropText}>
