@@ -10,7 +10,18 @@ import {
 } from "../../utils/icons";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ username = "Username", email = "username@gmail.com" }) => {
+const Sidebar = ({
+  username = "Username",
+  email = "username@gmail.com",
+  onUserClick,
+  onLogout,
+}) => {
+  const handleUserClick = () => {
+    if (onUserClick) {
+      onUserClick();
+    }
+  };
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoContainer}>
@@ -63,7 +74,13 @@ const Sidebar = ({ username = "Username", email = "username@gmail.com" }) => {
 
       <div className={styles.divider}></div>
 
-      <div className={styles.userInfo}>
+      <div
+        className={styles.userInfo}
+        onClick={handleUserClick}
+        role="button"
+        aria-label="Account settings"
+        tabIndex={0}
+      >
         <div className={styles.avatar}>
           <img src="./avatar.png" alt="User Avatar" />
         </div>

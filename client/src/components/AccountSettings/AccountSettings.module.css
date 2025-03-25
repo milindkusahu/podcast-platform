@@ -1,0 +1,158 @@
+.container {
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.header span {
+  font-weight: bold;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #1d1929;
+  cursor: pointer;
+  padding: 0;
+}
+
+.backButton span {
+  margin-left: 0.75rem;
+}
+
+.content {
+  width: 100%;
+  max-width: 900px;
+}
+
+.profileSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.avatarContainer {
+  margin-right: 2rem;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.formGroups {
+  flex: 1;
+}
+
+.formRow {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.formGroup {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1d1929;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  height: 45px;
+  padding: 0 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1d1929;
+  margin-bottom: 2.4rem;
+}
+
+.subscriptionBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(237, 217, 255, 1) 100%
+  );
+  border: 2px solid #d3adf3;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.subscriptionMessage {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+}
+
+.upgradeText {
+  font-weight: bold;
+}
+
+.upgradeButton {
+  min-width: 120px;
+  height: 40px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .profileSection {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatarContainer {
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .formGroup {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .subscriptionBox {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

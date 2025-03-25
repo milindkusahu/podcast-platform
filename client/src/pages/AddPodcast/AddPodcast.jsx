@@ -7,13 +7,8 @@ import YouTubeUploadModal from "../../components/modals/YouTubeUploadModal/YouTu
 import UploadFilesModal from "../../components/modals/UploadFilesModal/UploadFilesModal";
 import FilesTable from "../../components/FilesTable/FilesTable";
 import EditTranscript from "../../components/EditTranscript/EditTranscript";
-import {
-  NotificationIcon2,
-  HomeIcon,
-  UploadIcon,
-  LogoutIcon,
-  ArrowLeftIcon,
-} from "../../utils/icons";
+import AccountSettings from "../../components/AccountSettings/AccountSettings";
+import { NotificationIcon2, UploadIcon, LogoutIcon } from "../../utils/icons";
 import styles from "./AddPodcast.module.css";
 import Button from "../../components/common/Button/Button";
 
@@ -24,14 +19,14 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
   const [activeUploadAction, setActiveUploadAction] = useState(null);
   const [viewingTranscript, setViewingTranscript] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showingAccountSettings, setShowingAccountSettings] = useState(false);
+
   const [uploadedFiles, setUploadedFiles] = useState([
     {
       id: "file-1",
       name: "THE SIDEPOD S2 EPISODE 15",
       uploadDate: "25 Oct 23 | 09:04",
-      transcript: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni`,
+      transcript: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`,
     },
     {
       id: "file-2",
@@ -46,6 +41,13 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
       transcript: "This is the transcript for episode 20",
     },
   ]);
+
+  // Mock user data
+  const userData = {
+    username: "alphauser",
+    email: "alphauser@gmail.com",
+    avatar: "./avatar.png",
+  };
 
   const breadcrumbItems = [
     { label: "Home Page", path: "/" },
@@ -129,6 +131,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
   const handleViewFile = (file) => {
     setSelectedFile(file);
     setViewingTranscript(true);
+    setShowingAccountSettings(false);
   };
 
   const handleDeleteFile = (file) => {
@@ -156,6 +159,16 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
   const handleBackFromTranscript = () => {
     setViewingTranscript(false);
     setSelectedFile(null);
+  };
+
+  const handleUserClick = () => {
+    setShowingAccountSettings(true);
+    setViewingTranscript(false);
+    setSelectedFile(null);
+  };
+
+  const handleBackFromSettings = () => {
+    setShowingAccountSettings(false);
   };
 
   const renderSourceCards = () => (
@@ -190,9 +203,71 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
   // Check if there are any files uploaded
   const hasUploadedFiles = uploadedFiles.length > 0;
 
+  const renderMainContent = () => {
+    if (showingAccountSettings) {
+      return (
+        <AccountSettings user={userData} onBack={handleBackFromSettings} />
+      );
+    }
+
+    if (viewingTranscript && selectedFile) {
+      return (
+        <EditTranscript
+          transcript={selectedFile.transcript}
+          onBack={handleBackFromTranscript}
+          onSave={handleSaveTranscript}
+        />
+      );
+    }
+
+    return (
+      <>
+        <h1 className={styles.pageTitle}>Add Podcast</h1>
+
+        {renderSourceCards()}
+
+        {!hasUploadedFiles && (
+          <div className={styles.fileDropContainer}>
+            <UploadIcon width={100} height={100} color="var(--primary-color)" />
+            <div className={styles.dropText}>
+              <h3>
+                Select a file or drag and drop here (Podcast Media or
+                Transcription Text)
+              </h3>
+              <p>MP4, MOV, MP3, WAV, PDF, DOCX or TXT file</p>
+            </div>
+
+            <Button
+              bgColor="transparent"
+              textColor="#7e22ce"
+              strokeColor="#7e22ce"
+              hoverBgColor="#7e22ce"
+              hoverTextColor="white"
+              radius="50px"
+              className={styles.selectFileButton}
+            >
+              Select File
+            </Button>
+          </div>
+        )}
+
+        <FilesTable
+          files={uploadedFiles}
+          onView={handleViewFile}
+          onDelete={handleDeleteFile}
+        />
+      </>
+    );
+  };
+
   return (
     <div className={styles.pageContainer}>
-      <Sidebar onLogout={onLogout} />
+      <Sidebar
+        username={userData.username}
+        email={userData.email}
+        onUserClick={handleUserClick}
+        onLogout={onLogout}
+      />
 
       <main className={styles.content}>
         <div className={styles.header}>
@@ -210,54 +285,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
           </div>
         </div>
 
-        {viewingTranscript && selectedFile ? (
-          <EditTranscript
-            transcript={selectedFile.transcript}
-            onBack={handleBackFromTranscript}
-            onSave={handleSaveTranscript}
-          />
-        ) : (
-          <>
-            <h1 className={styles.pageTitle}>Add Podcast</h1>
-
-            {renderSourceCards()}
-
-            {!hasUploadedFiles && (
-              <div className={styles.fileDropContainer}>
-                <UploadIcon
-                  width={100}
-                  height={100}
-                  color="var(--primary-color)"
-                />
-                <div className={styles.dropText}>
-                  <h3>
-                    Select a file or drag and drop here (Podcast Media or
-                    Transcription Text)
-                  </h3>
-                  <p>MP4, MOV, MP3, WAV, PDF, DOCX or TXT file</p>
-                </div>
-
-                <Button
-                  bgColor="transparent"
-                  textColor="#7e22ce"
-                  strokeColor="#7e22ce"
-                  hoverBgColor="#7e22ce"
-                  hoverTextColor="white"
-                  radius="50px"
-                  className={styles.selectFileButton}
-                >
-                  Select File
-                </Button>
-              </div>
-            )}
-
-            <FilesTable
-              files={uploadedFiles}
-              onView={handleViewFile}
-              onDelete={handleDeleteFile}
-            />
-          </>
-        )}
+        {renderMainContent()}
       </main>
 
       {showYouTubeModal && (
