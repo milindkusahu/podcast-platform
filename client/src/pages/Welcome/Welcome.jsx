@@ -3,7 +3,7 @@ import styles from "./Welcome.module.css";
 import Button from "../../components/common/Button/Button";
 import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
 
-const Welcome = () => {
+const Welcome = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -12,6 +12,10 @@ const Welcome = () => {
     e.preventDefault();
 
     console.log("Login with:", { email, password, rememberMe });
+
+    if (onLogin) {
+      onLogin({ email, password, rememberMe });
+    }
   };
 
   return (
