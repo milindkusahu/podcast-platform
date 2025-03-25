@@ -106,6 +106,7 @@ export const NotificationIcon2 = createIcon(
     <path
       d="M19.444 36h23.111m-20.444 0v-8.889a8.889 8.889 0 1 1 17.778 0v8.89m-12.445 2.666v.889a3.556 3.556 0 1 0 7.111 0v-.89"
       stroke="#1D1929"
+      fill="none"
       stroke-width="2.267"
     />
   </>,
