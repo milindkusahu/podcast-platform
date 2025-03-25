@@ -54,3 +54,38 @@ export const projectSchema = Joi.object({
     "string.max": "Description cannot exceed 500 characters",
   }),
 });
+
+// Episode validation schemas
+export const episodeSchema = Joi.object({
+  title: Joi.string().max(100).required().messages({
+    "string.empty": "Episode title is required",
+    "string.max": "Title cannot exceed 100 characters",
+  }),
+  project: Joi.string()
+    .pattern(/^[0-9a-fA-F]{24}$/)
+    .required()
+    .messages({
+      "string.empty": "Project ID is required",
+      "string.pattern.base": "Invalid project ID format",
+    }),
+  source: Joi.string().valid("RSS", "YouTube", "Manual").messages({
+    "any.only": "Source must be RSS, YouTube, or Manual",
+  }),
+  sourceUrl: Joi.string().allow(""),
+  transcript: Joi.string().allow(""),
+});
+
+export const episodeUpdateSchema = Joi.object({
+  title: Joi.string().max(100).messages({
+    "string.max": "Title cannot exceed 100 characters",
+  }),
+  transcript: Joi.string().allow(""),
+});
+
+export const updateUserSchema = Joi.object({
+  username: Joi.string().min(3).max(50).required().messages({
+    "string.empty": "Username is required",
+    "string.min": "Username must be at least 3 characters long",
+    "string.max": "Username cannot exceed 50 characters",
+  }),
+});

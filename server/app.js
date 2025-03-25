@@ -4,6 +4,8 @@ import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
+import episodeRoutes from "./routes/episode.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/projects", projectRoutes);
+app.use("/api/v1/episodes", episodeRoutes);
+app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
   try {

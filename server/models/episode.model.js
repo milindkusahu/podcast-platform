@@ -35,6 +35,7 @@ const EpisodeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Update project lastEdited time when a new episode is added or updated
 EpisodeSchema.post("save", async function () {
   await mongoose
     .model("Project")
