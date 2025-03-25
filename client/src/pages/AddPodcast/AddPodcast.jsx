@@ -11,8 +11,11 @@ import AccountSettings from "../../components/AccountSettings/AccountSettings";
 import { NotificationIcon2, UploadIcon, LogoutIcon } from "../../utils/icons";
 import styles from "./AddPodcast.module.css";
 import Button from "../../components/common/Button/Button";
+import IMAGES from "../../config/paths";
+import { useNavigate } from "react-router-dom";
 
-const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
+const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
+  const navigate = useNavigate();
   const [showYouTubeModal, setShowYouTubeModal] = useState(false);
   const [showRSSModal, setShowRSSModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -46,13 +49,13 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
   const userData = {
     username: "alphauser",
     email: "alphauser@gmail.com",
-    avatar: "./avatar.png",
+    avatar: IMAGES.AVATAR,
   };
 
   const breadcrumbItems = [
     { label: "Home Page", path: "/" },
-    { label: projectName, path: "#", onClick: onBack },
-    { label: "Add your podcast", path: "#" },
+    { label: "Projects", path: "/projects" },
+    { label: projectName, path: "#" },
   ];
 
   const handleRSSSelect = () => {
@@ -176,7 +179,7 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
       <PodcastSourceCard
         title="RSS Feed"
         description="Lorem ipsum dolor sit. Dolor lorem sit."
-        icon={<img src="./rss.png" alt="RSS Feed" width="64" height="64" />}
+        icon={<img src={IMAGES.RSS} alt="RSS Feed" width="64" height="64" />}
         onClick={handleRSSSelect}
       />
 
@@ -184,7 +187,12 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
         title="Youtube Video"
         description="Lorem ipsum dolor sit. Dolor lorem sit."
         icon={
-          <img src="./youtube.png" alt="YouTube Video" width="64" height="64" />
+          <img
+            src={IMAGES.YOUTUBE}
+            alt="YouTube Video"
+            width="64"
+            height="64"
+          />
         }
         onClick={handleYouTubeSelect}
       />
@@ -193,7 +201,7 @@ const AddPodcast = ({ projectName = "Sample Project", onBack, onLogout }) => {
         title="Upload Files"
         description="Lorem ipsum dolor sit. Dolor lorem sit."
         icon={
-          <img src="./upload.png" alt="Upload Files" width="64" height="64" />
+          <img src={IMAGES.UPLOAD} alt="Upload Files" width="64" height="64" />
         }
         onClick={handleUploadSelect}
       />

@@ -9,6 +9,7 @@ import {
   SettingsIcon,
 } from "../../utils/icons";
 import styles from "./Sidebar.module.css";
+import IMAGES from "../../config/paths";
 
 const Sidebar = ({
   username = "Username",
@@ -82,7 +83,7 @@ const Sidebar = ({
         tabIndex={0}
       >
         <div className={styles.avatar}>
-          <img src="./avatar.png" alt="User Avatar" />
+          <img src={IMAGES.AVATAR} alt="User Avatar" />
         </div>
         <div className={styles.userDetails}>
           <div className={styles.username}>{username}</div>

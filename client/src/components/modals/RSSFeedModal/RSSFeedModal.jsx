@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "../../../components/common/Button/Button";
 import styles from "./RSSFeedModal.module.css";
+import IMAGES from "../../../config/paths";
 
 const RSSFeedModal = ({ onClose, onUpload }) => {
   const [name, setName] = useState("");
@@ -19,7 +20,7 @@ const RSSFeedModal = ({ onClose, onUpload }) => {
         <div className={styles.modalHeader}>
           <div className={styles.titleContainer}>
             <div className={styles.logoContainer}>
-              <img src="./rss.png" alt="RSS Feed" width="40" height="40" />
+              <img src={IMAGES.RSS} alt="RSS Feed" width="40" height="40" />
             </div>
             <h2 className={styles.modalTitle}>Upload from RSS Feed</h2>
           </div>

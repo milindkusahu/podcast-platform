@@ -1,103 +1,91 @@
-import React, { useState } from "react";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "./pages/Welcome/Welcome";
 import CreateProject from "./pages/CreateProject/CreateProject";
 import Projects from "./pages/Projects/Projects";
 import AddPodcast from "./pages/AddPodcast/AddPodcast";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { useAuth } from "./context/AuthContext";
+import { useProjects } from "./context/ProjectContext";
+import ProjectRouteHelper from "./components/ProjectRouteHelper/ProjectRouteHelper";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("login");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const { isLoggedIn, login, logout } = useAuth();
+  const {
+    projects,
+    createProject,
+    selectProject,
+    selectedProject,
+    setSelectedProject,
+  } = useProjects();
 
-  const handleLogin = (userData) => {
-    console.log("Logged in with:", userData);
-    setIsLoggedIn(true);
-    setCurrentPage("createProject");
-  };
+  return (
+    <div className="app">
+      <Routes>
+        {/* Public route - Login page */}
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/create-project" />
+            ) : (
+              <Welcome onLogin={login} />
+            )
+          }
+        />
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentPage("login");
-  };
+        {/* Protected routes - require authentication */}
+        <Route
+          path="/create-project"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <CreateProject
+                onCreateProject={createProject}
+                onLogout={logout}
+              />
+            </ProtectedRoute>
+          }
+        />
 
-  const handleCreateProject = (projectName) => {
-    const initials = projectName
-      .split(" ")
-      .map((word) => word[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
+        <Route
+          path="/projects"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Projects
+                projects={projects}
+                onSelectProject={selectProject}
+                onLogout={logout}
+                onCreateProject={createProject}
+              />
+            </ProtectedRoute>
+          }
+        />
 
-    const newProject = {
-      id: `project-${Date.now()}`,
-      name: projectName,
-      files: 0,
-      lastEdited: "just now",
-      initials,
-      color: getRandomColor(),
-    };
+        <Route
+          path="/projects/:projectId/podcasts"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <ProjectRouteHelper
+                projects={projects}
+                selectedProject={selectedProject}
+                setSelectedProject={setSelectedProject}
+              >
+                <AddPodcast
+                  projectName={
+                    selectedProject ? selectedProject.name : "Sample Project"
+                  }
+                  onLogout={logout}
+                />
+              </ProjectRouteHelper>
+            </ProtectedRoute>
+          }
+        />
 
-    setProjects([...projects, newProject]);
-    setCurrentPage("projects");
-  };
-
-  const handleSelectProject = (project) => {
-    setSelectedProject(project);
-    setCurrentPage("addPodcast");
-  };
-
-  const getRandomColor = () => {
-    const colors = ["#FFA500", "#4CAF50", "#2196F3", "#9C27B0", "#F44336"];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
-  const renderPage = () => {
-    if (!isLoggedIn) {
-      return <Welcome onLogin={handleLogin} />;
-    }
-
-    switch (currentPage) {
-      case "createProject":
-        return (
-          <CreateProject
-            onBack={() => setCurrentPage("projects")}
-            onLogout={handleLogout}
-            onCreateProject={handleCreateProject}
-          />
-        );
-      case "projects":
-        return (
-          <Projects
-            projects={projects}
-            onNewProject={() => setCurrentPage("createProject")}
-            onSelectProject={handleSelectProject}
-            onLogout={handleLogout}
-            onCreateProject={handleCreateProject}
-          />
-        );
-      case "addPodcast":
-        return (
-          <AddPodcast
-            projectName={
-              selectedProject ? selectedProject.name : "Sample Project"
-            }
-            onBack={() => setCurrentPage("projects")}
-            onLogout={handleLogout}
-          />
-        );
-      default:
-        return (
-          <CreateProject
-            onBack={() => setCurrentPage("projects")}
-            onLogout={handleLogout}
-            onCreateProject={handleCreateProject}
-          />
-        );
-    }
-  };
-
-  return <div className="app">{renderPage()}</div>;
+        {/* Redirect any unknown paths to home */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
