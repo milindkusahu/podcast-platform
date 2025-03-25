@@ -3,19 +3,35 @@ import styles from "./Welcome.module.css";
 import Button from "../../components/common/Button/Button";
 import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
 
-const Welcome = ({ onLogin }) => {
+const Welcome = ({ onLogin, onSignup }) => {
+  const [isLoginForm, setIsLoginForm] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     console.log("Login with:", { email, password, rememberMe });
-
     if (onLogin) {
       onLogin({ email, password, rememberMe });
     }
+  };
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    console.log("Signup with:", { name, email, password });
+    if (onSignup) {
+      onSignup({ name, email, password });
+    }
+  };
+
+  const toggleForm = () => {
+    setIsLoginForm(!isLoginForm);
+    setEmail("");
+    setPassword("");
+    setName("");
+    setRememberMe(false);
   };
 
   return (
@@ -49,80 +65,153 @@ const Welcome = ({ onLogin }) => {
               <MainLogo width={80} height={80} />
             </div>
             <h2 className={styles.welcomeText}>
-              Welcome to
+              {isLoginForm ? "Welcome to" : "Join us"}
               <br />
               <span className={styles.brandName}>Ques.AI</span>
             </h2>
           </div>
 
-          <form onSubmit={handleLogin} className={styles.form}>
-            <div className={styles.inputGroup}>
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.input}
-                required
-              />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={styles.input}
-                required
-              />
-            </div>
-
-            <div className={styles.formActions}>
-              <label className={styles.checkboxLabel}>
+          {isLoginForm ? (
+            // Login Form
+            <form onSubmit={handleLogin} className={styles.form}>
+              <div className={styles.inputGroup}>
                 <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className={styles.checkbox}
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={styles.input}
+                  required
                 />
-                <span className={styles.checkboxText}>Remember me</span>
-              </label>
-              <a href="#" className={styles.forgotPassword}>
-                Forgot password?
-              </a>
-            </div>
+              </div>
 
-            <Button
-              fullWidth
-              bgColor="var(--primary-color)"
-              textColor="white"
-              type="submit"
-            >
-              Login
-            </Button>
+              <div className={styles.inputGroup}>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
 
-            <div className={styles.divider}>
-              <span className={styles.dividerText}>or</span>
-            </div>
+              <div className={styles.formActions}>
+                <label className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className={styles.checkbox}
+                  />
+                  <span className={styles.checkboxText}>Remember me</span>
+                </label>
+                <a href="#" className={styles.forgotPassword}>
+                  Forgot password?
+                </a>
+              </div>
 
-            <Button
-              fullWidth
-              bgColor="white"
-              textColor="#333"
-              strokeColor="#ccc"
-              icon={<GoogleIcon width={16} height={16} />}
-              onClick={() => console.log("Continue with Google")}
-              type="button"
-            >
-              Continue with Google
-            </Button>
-          </form>
+              <Button
+                fullWidth
+                bgColor="var(--primary-color)"
+                textColor="white"
+                type="submit"
+              >
+                Login
+              </Button>
+
+              <div className={styles.divider}>
+                <span className={styles.dividerText}>or</span>
+              </div>
+
+              <Button
+                fullWidth
+                bgColor="white"
+                textColor="#333"
+                strokeColor="#ccc"
+                icon={<GoogleIcon width={16} height={16} />}
+                onClick={() => console.log("Continue with Google")}
+                type="button"
+              >
+                Continue with Google
+              </Button>
+            </form>
+          ) : (
+            // Signup Form
+            <form onSubmit={handleSignup} className={styles.form}>
+              <div className={styles.inputGroup}>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  required
+                />
+              </div>
+
+              <Button
+                fullWidth
+                bgColor="var(--primary-color)"
+                textColor="white"
+                type="submit"
+              >
+                Create Account
+              </Button>
+
+              <div className={styles.divider}>
+                <span className={styles.dividerText}>or</span>
+              </div>
+
+              <Button
+                fullWidth
+                bgColor="white"
+                textColor="#333"
+                strokeColor="#ccc"
+                icon={<GoogleIcon width={16} height={16} />}
+                onClick={() => console.log("Continue with Google")}
+                type="button"
+              >
+                Sign up with Google
+              </Button>
+            </form>
+          )}
 
           <div className={styles.signupPrompt}>
-            Don't have an account?{" "}
-            <a href="#" className={styles.signupLink}>
-              Create Account
+            {isLoginForm
+              ? "Don't have an account? "
+              : "Already have an account? "}
+            <a
+              href="#"
+              className={styles.signupLink}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleForm();
+              }}
+            >
+              {isLoginForm ? "Create Account" : "Login"}
             </a>
           </div>
         </div>

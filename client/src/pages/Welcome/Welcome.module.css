@@ -21,14 +21,14 @@
   background-size: cover;
   background-position: center;
   color: white;
-  padding: 4rem;
+  padding: 5rem;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
 .logoContainer {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
 }
