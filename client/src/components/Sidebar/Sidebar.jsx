@@ -25,7 +25,7 @@ const Sidebar = ({
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoContainer}>
-        <ColorLogo width={120} height={32} />
+        <ColorLogo width={140} height={35} className={styles.colorLogo} />
       </div>
 
       <nav className={styles.navigation}>

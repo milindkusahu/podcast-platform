@@ -11,7 +11,12 @@
 }
 
 .logoContainer {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 0.5rem;
+}
+
+.colorLogo {
+  margin-top: 1.5rem;
 }
 
 .navigation {

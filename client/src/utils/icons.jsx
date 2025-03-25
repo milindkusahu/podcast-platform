@@ -272,33 +272,18 @@ export const WhiteLogo = createIcon(
   "0 0 271 59"
 );
 
-export const ArrowLeftIcon = ({
-  width = 24,
-  height = 24,
-  color = "#000000",
-}) => {
-  return (
-    <svg
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M19 12H5"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M12 19L5 12L12 5"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
+export const ArrowLeftIcon = createIcon(
+  <>
+    <path
+      d="M43.031 23.406H11.156a2.094 2.094 0 0 0 0 4.188h31.875a2.094 2.094 0 0 0 0-4.188Z"
+      fill="#1D1929"
+      stroke="#1D1929"
+    />
+    <path
+      d="m12.523 25.5 12.865-12.862a2.096 2.096 0 0 0 0-2.964l-.353.354.353-.354a2.096 2.096 0 0 0-2.964 0L8.081 24.018a2.094 2.094 0 0 0 0 2.964l14.343 14.344a2.096 2.096 0 1 0 2.964-2.964z"
+      fill="#1D1929"
+      stroke="#1D1929"
+    />
+  </>,
+  "0 0 51 51"
+);

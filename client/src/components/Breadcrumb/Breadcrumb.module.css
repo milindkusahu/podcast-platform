@@ -2,13 +2,14 @@
   display: flex;
   align-items: center;
   padding: 1rem 0;
-  color: #777;
-  font-size: 0.9rem;
+  color: #999999;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 .item {
   text-decoration: none;
-  color: #777;
+  color: #999999;
   transition: color 0.2s;
   display: flex;
   align-items: center;
@@ -21,12 +22,12 @@
 
 .active {
   color: var(--primary-color);
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .separator {
   margin: 0 0.5rem;
-  color: #999;
+  color: #999999;
 }
 
 .homeIcon {

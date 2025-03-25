@@ -19,8 +19,8 @@ const Breadcrumb = ({ items = [] }) => {
                   style={{ cursor: "pointer" }}
                 >
                   <HomeIcon
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                     className={styles.homeIcon}
                   />
                   <span>{item.label}</span>
@@ -28,8 +28,8 @@ const Breadcrumb = ({ items = [] }) => {
               ) : (
                 <Link to={item.path} className={styles.item}>
                   <HomeIcon
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                     className={styles.homeIcon}
                   />
                   <span>{item.label}</span>
