@@ -3,6 +3,7 @@ import cors from "cors";
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
+import projectRoutes from "./routes/project.routes.js";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 app.use(
   cors({
-    origin: `http://127.0.0.1:3000`,
+    origin: process.env.CLIENT_URL,
     allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
     credentials: true,
   })
@@ -22,6 +23,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/projects", projectRoutes);
 
 const start = async () => {
   try {

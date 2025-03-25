@@ -43,3 +43,14 @@ export const validateRequest = (schema) => {
     next();
   };
 };
+
+// Project validation schema
+export const projectSchema = Joi.object({
+  title: Joi.string().max(100).required().messages({
+    "string.empty": "Project title is required",
+    "string.max": "Title cannot exceed 100 characters",
+  }),
+  description: Joi.string().max(500).allow("").messages({
+    "string.max": "Description cannot exceed 500 characters",
+  }),
+});
