@@ -16,7 +16,6 @@ import IMAGES from "../../config/paths";
 import { episodeService } from "../../api/episodeService";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import SEO from "../../components/SEO/SEO";
 
 const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   const { projectId } = useParams();
@@ -369,12 +368,6 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
 
   return (
     <div className={styles.pageContainer}>
-      <SEO
-        title={`Add Podcast - ${projectName}`}
-        description="Add and manage podcast episodes for your project"
-        keywords={["podcast", "episodes", "upload", "transcription"]}
-      />
-
       <Sidebar
         username={userData.username}
         email={userData.email}

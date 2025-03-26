@@ -4,7 +4,6 @@ import Button from "../../components/Button/Button";
 import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
 import { useAuth } from "../../context/AuthContext";
 import { Toaster } from "react-hot-toast";
-import SEO from "../../components/SEO/SEO";
 
 const Welcome = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -41,26 +40,8 @@ const Welcome = () => {
     setRememberMe(false);
   };
 
-  const seoTitle = isLoginForm ? "Login" : "Create Account";
-  const seoDescription = isLoginForm
-    ? "Log in to your Ques.AI account to manage and repurpose your podcast content."
-    : "Create a Ques.AI account to start managing and repurposing your podcast content.";
-  const seoKeywords = [
-    "login",
-    "signup",
-    "account",
-    "podcast management",
-    "content repurposing",
-  ];
-
   return (
     <div className={styles.container}>
-      <SEO
-        title={seoTitle}
-        description={seoDescription}
-        keywords={seoKeywords}
-      />
-
       <Toaster position="top-right" />
 
       {/* Left Panel */}

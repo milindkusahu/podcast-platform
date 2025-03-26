@@ -4,7 +4,6 @@ import Button from "../../components/Button/Button";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
 import { PlusIcon } from "../../utils/icons";
 import styles from "./CreateProject.module.css";
-import SEO from "../../components/SEO/SEO";
 
 const CreateProject = ({ onBack, onLogout, onCreateProject }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,16 +26,6 @@ const CreateProject = ({ onBack, onLogout, onCreateProject }) => {
 
   return (
     <div className={styles.container}>
-      <SEO
-        title="Create New Project"
-        description="Create a new podcast project in Ques.AI to organize your content and episodes."
-        keywords={[
-          "project creation",
-          "podcast organization",
-          "content management",
-          "new project",
-        ]}
-      />
       <Header onLogout={onLogout} />
       <main className={styles.main}>
         <h1 className={styles.title}>Create a New Project</h1>

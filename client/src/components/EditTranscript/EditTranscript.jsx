@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "../../utils/icons";
 import styles from "./EditTranscript.module.css";
 import Button from "../Button/Button";
-import SEO from "../SEO/SEO";
 
 const EditTranscript = ({ transcript, onBack, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -37,11 +36,6 @@ const EditTranscript = ({ transcript, onBack, onSave }) => {
 
   return (
     <div className={styles.wrapper}>
-      <SEO
-        title="Edit Transcript"
-        description="Edit podcast episode transcript"
-        keywords={["transcript", "edit", "content"]}
-      />
       <div className={styles.header}>
         <button className={styles.backButton} onClick={onBack}>
           <ArrowLeftIcon width={35} height={35} color="#1D1929" />

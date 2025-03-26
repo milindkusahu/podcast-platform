@@ -6,7 +6,6 @@ import { PlusIcon } from "../../utils/icons";
 import styles from "./Projects.module.css";
 import { useProjects } from "../../context/ProjectContext";
 import { Toaster } from "react-hot-toast";
-import SEO from "../../components/SEO/SEO";
 
 const Projects = ({ onLogout }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,17 +70,6 @@ const Projects = ({ onLogout }) => {
 
   return (
     <div className={styles.container}>
-      <SEO
-        title="My Projects"
-        description="Manage your podcast projects and organize your content in one place."
-        keywords={[
-          "projects",
-          "podcast management",
-          "content organization",
-          "podcast projects",
-        ]}
-      />
-
       <Toaster position="top-right" />
       <Header onLogout={onLogout} />
       <main className={styles.main}>
