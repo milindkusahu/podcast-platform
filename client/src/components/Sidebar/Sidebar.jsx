@@ -10,13 +10,15 @@ import {
 } from "../../utils/icons";
 import styles from "./Sidebar.module.css";
 import IMAGES from "../../config/paths";
+import { useAuth } from "../../context/AuthContext";
 
-const Sidebar = ({
-  username = "Username",
-  email = "username@gmail.com",
-  onUserClick,
-  onLogout,
-}) => {
+const Sidebar = ({ onUserClick, onLogout }) => {
+  const { user } = useAuth();
+
+  // Default values in case user data is not available
+  const username = user?.username || "User";
+  const email = user?.email || "user@example.com";
+
   const handleUserClick = () => {
     if (onUserClick) {
       onUserClick();

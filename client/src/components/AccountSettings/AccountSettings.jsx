@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { ArrowLeftIcon } from "../../utils/icons";
 import styles from "./AccountSettings.module.css";
 import Button from "../Button/Button";
+import { useAuth } from "../../context/AuthContext";
+import IMAGES from "../../config/paths";
 
-const AccountSettings = ({ user, onBack }) => {
-  const { username, email, avatar } = user;
+const AccountSettings = ({ onBack }) => {
+  const { user, updateProfile, loading } = useAuth();
+
+  const [formData, setFormData] = useState({
+    username: user?.username || "",
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      username: user?.username || "",
+    });
+    setIsEditing(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.username === user.username) {
+      setIsEditing(false);
+      return;
+    }
+
+    const success = await updateProfile({ username: formData.username });
+    if (success) {
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -16,43 +57,85 @@ const AccountSettings = ({ user, onBack }) => {
       </div>
 
       <div className={styles.content}>
-        <div className={styles.profileSection}>
-          <div className={styles.avatarContainer}>
-            <img
-              src={avatar || "./avatar.png"}
-              alt="User Avatar"
-              className={styles.avatar}
-            />
-          </div>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.profileSection}>
+            <div className={styles.avatarContainer}>
+              <img
+                src={user?.avatar || IMAGES.AVATAR}
+                alt="User Avatar"
+                className={styles.avatar}
+              />
+            </div>
 
-          <div className={styles.formGroups}>
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label htmlFor="username" className={styles.label}>
-                  User Name
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  className={styles.input}
-                  defaultValue={username}
-                />
+            <div className={styles.formGroups}>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="username" className={styles.label}>
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    className={styles.input}
+                    value={formData.username}
+                    onChange={handleChange}
+                    disabled={!isEditing || loading}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="email" className={styles.label}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className={styles.input}
+                    value={user?.email || ""}
+                    disabled={true}
+                  />
+                </div>
               </div>
 
-              <div className={styles.formGroup}>
-                <label htmlFor="email" className={styles.label}>
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className={styles.input}
-                  defaultValue={email}
-                />
-              </div>
+              {isEditing ? (
+                <div className={styles.actionButtons}>
+                  <Button
+                    type="button"
+                    bgColor="transparent"
+                    textColor="#F44336"
+                    strokeColor="#F44336"
+                    className={styles.cancelButton}
+                    onClick={handleCancel}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    bgColor="var(--primary-color)"
+                    textColor="white"
+                    className={styles.saveButton}
+                    disabled={loading}
+                  >
+                    {loading ? "Saving..." : "Save Changes"}
+                  </Button>
+                </div>
+              ) : (
+                <div className={styles.actionButtons}>
+                  <Button
+                    type="button"
+                    bgColor="var(--primary-color)"
+                    textColor="white"
+                    className={styles.editButton}
+                    onClick={handleEdit}
+                  >
+                    Edit Profile
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        </form>
 
         <h2 className={styles.sectionTitle}>Subscriptions</h2>
 

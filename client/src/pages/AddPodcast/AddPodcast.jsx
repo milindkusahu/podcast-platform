@@ -14,10 +14,12 @@ import styles from "./AddPodcast.module.css";
 import Button from "../../components/Button/Button";
 import IMAGES from "../../config/paths";
 import { episodeService } from "../../api/episodeService";
+import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   const { projectId } = useParams();
+  const { user } = useAuth();
   const [showYouTubeModal, setShowYouTubeModal] = useState(false);
   const [showRSSModal, setShowRSSModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -28,12 +30,14 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   const [loading, setLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
+  // Mock user data
   const userData = {
-    username: "alphauser",
-    email: "alphauser@gmail.com",
+    username: user?.username || "User",
+    email: user?.email || "user@example.com",
     avatar: IMAGES.AVATAR,
   };
 
+  // Fetch episodes when component mounts
   useEffect(() => {
     if (projectId) {
       fetchEpisodes();
@@ -45,6 +49,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
       setLoading(true);
       const episodes = await episodeService.getEpisodesByProjectId(projectId);
 
+      // Transform episodes to match our UI format
       const formattedEpisodes = episodes.map((episode) => ({
         id: episode._id,
         name: episode.title,
@@ -139,7 +144,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
         title: data.name,
         project: projectId,
         source: "YouTube",
-        sourceUrl: data.name,
+        sourceUrl: data.name, // Using name as URL for simplicity
         transcript: data.transcript || "",
       };
 
@@ -173,7 +178,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
         title: data.name,
         project: projectId,
         source: "RSS",
-        sourceUrl: data.name,
+        sourceUrl: data.name, // Using name as URL for simplicity
         transcript: data.transcript || "",
       };
 
@@ -305,9 +310,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
 
   const renderMainContent = () => {
     if (showingAccountSettings) {
-      return (
-        <AccountSettings user={userData} onBack={handleBackFromSettings} />
-      );
+      return <AccountSettings onBack={handleBackFromSettings} />;
     }
 
     if (viewingTranscript && selectedFile) {

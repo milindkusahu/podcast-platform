@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../api/authService";
+import { userService } from "../api/userService";
 import toast from "react-hot-toast";
 
 const AuthContext = createContext(null);
@@ -14,11 +15,22 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkLoggedIn = () => {
+    const checkLoggedIn = async () => {
       if (authService.isAuthenticated()) {
-        const userData = authService.getCurrentUser();
-        setUser(userData);
-        setIsLoggedIn(true);
+        try {
+          const storedUser = authService.getCurrentUser();
+          setUser(storedUser);
+          setIsLoggedIn(true);
+
+          const userProfile = await userService.getCurrentUser();
+          setUser(userProfile);
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+
+          authService.logout();
+          setIsLoggedIn(false);
+          setUser(null);
+        }
       }
       setLoading(false);
     };
@@ -36,6 +48,10 @@ export const AuthProvider = ({ children }) => {
 
       setIsLoggedIn(true);
       setUser(result.user);
+
+      const userProfile = await userService.getCurrentUser();
+      setUser(userProfile);
+
       toast.success("Successfully logged in!");
       navigate("/create-project");
     } catch (error) {
@@ -62,6 +78,7 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
 
       toast.success("Account created successfully! Please log in.");
+
       return true;
     } catch (error) {
       console.error("Signup error:", error);
@@ -82,6 +99,25 @@ export const AuthProvider = ({ children }) => {
     navigate("/");
   };
 
+  const updateProfile = async (userData) => {
+    try {
+      setLoading(true);
+
+      const updatedUser = await userService.updateUser({
+        username: userData.username,
+      });
+      setUser(updatedUser);
+      toast.success("Profile updated successfully!");
+      return true;
+    } catch (error) {
+      console.error("Profile update error:", error);
+      toast.error(error.message || "Failed to update profile.");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     isLoggedIn,
     user,
@@ -89,6 +125,7 @@ export const AuthProvider = ({ children }) => {
     login,
     signup,
     logout,
+    updateProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
