@@ -70,7 +70,7 @@ const Projects = ({ onLogout }) => {
 
   return (
     <div className={styles.container}>
-      <Toaster position="top-right" />
+      <Toaster position="bottom-center" />
       <Header onLogout={onLogout} />
       <main className={styles.main}>
         <div className={styles.header}>

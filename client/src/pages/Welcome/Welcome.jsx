@@ -4,6 +4,7 @@ import Button from "../../components/Button/Button";
 import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
 import { useAuth } from "../../context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import backgroundWaves from "../../assets/background-waves.svg";
 
 const Welcome = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -42,10 +43,13 @@ const Welcome = () => {
 
   return (
     <div className={styles.container}>
-      <Toaster position="top-right" />
+      <Toaster position="bottom-center" />
 
       {/* Left Panel */}
-      <div className={styles.leftPanel}>
+      <div
+        className={styles.leftPanel}
+        style={{ backgroundImage: `url(${backgroundWaves})` }}
+      >
         <div className={styles.logoContainer}>
           <WhiteLogo width={290} height={70} className={styles.logo} />
         </div>

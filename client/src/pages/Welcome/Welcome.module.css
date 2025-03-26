@@ -16,7 +16,6 @@
 /* Left Panel Styles */
 .leftPanel {
   background-color: var(--primary-color);
-  background-image: url("./background-waves.svg");
   position: relative;
   background-size: cover;
   background-position: center;

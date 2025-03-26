@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="app">
-      <Toaster position="top-right" />
+      <Toaster position="bottom-center" />
 
       <Routes>
         <Route
