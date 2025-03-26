@@ -141,7 +141,7 @@ export const CollapseIcon = createIcon(
       stroke="#fff"
       fill="none"
       strokeWidth="1.595"
-      stroke-linecap="square"
+      strokeLinecap="square"
     />
   </>,
   "0 0 51 51"

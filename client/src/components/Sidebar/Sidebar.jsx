@@ -15,7 +15,6 @@ import { useAuth } from "../../context/AuthContext";
 const Sidebar = ({ onUserClick, onLogout }) => {
   const { user } = useAuth();
 
-  // Default values in case user data is not available
   const username = user?.username || "User";
   const email = user?.email || "user@example.com";
 
@@ -68,28 +67,33 @@ const Sidebar = ({ onUserClick, onLogout }) => {
 
       <div className={styles.divider}></div>
 
-      <div className={styles.navItem}>
-        <div className={styles.navIcon}>
-          <SettingsIcon width={16} height={16} color="#555" />
-        </div>
-        <span>Help</span>
-      </div>
+      <div className={styles.spacer}></div>
 
-      <div className={styles.divider}></div>
-
-      <div
-        className={styles.userInfo}
-        onClick={handleUserClick}
-        role="button"
-        aria-label="Account settings"
-        tabIndex={0}
-      >
-        <div className={styles.avatar}>
-          <img src={IMAGES.AVATAR} alt="User Avatar" />
+      {/* Bottom navigation */}
+      <div className={styles.bottomNav}>
+        <div className={styles.navItem}>
+          <div className={styles.navIcon}>
+            <SettingsIcon width={16} height={16} color="#555" />
+          </div>
+          <span>Help</span>
         </div>
-        <div className={styles.userDetails}>
-          <div className={styles.username}>{username}</div>
-          <div className={styles.email}>{email}</div>
+
+        <div className={styles.divider}></div>
+
+        <div
+          className={styles.userInfo}
+          onClick={handleUserClick}
+          role="button"
+          aria-label="Account settings"
+          tabIndex={0}
+        >
+          <div className={styles.avatar}>
+            <img src={IMAGES.AVATAR} alt="User Avatar" />
+          </div>
+          <div className={styles.userDetails}>
+            <div className={styles.username}>{username}</div>
+            <div className={styles.email}>{email}</div>
+          </div>
         </div>
       </div>
 

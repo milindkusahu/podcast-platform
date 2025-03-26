@@ -1,9 +1,17 @@
+.wrapper {
+  width: 100%;
+}
+
 .container {
   width: 100%;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: 1px solid #c7c7c7;
   overflow: hidden;
+  margin-top: 1.5rem;
+  padding-left: 2rem;
+  padding-bottom: 2rem;
 }
 
 .header {
@@ -19,8 +27,8 @@
   align-items: center;
   background: none;
   border: none;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 2rem;
+  font-weight: bold;
   color: #333;
   cursor: pointer;
   padding: 0;
@@ -42,7 +50,7 @@
 }
 
 .content {
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .transcriptSection {
@@ -52,17 +60,18 @@
 }
 
 .speakerHeader {
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .speakerLabel {
   color: var(--primary-color);
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 .transcriptText {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #333;
   white-space: pre-wrap;

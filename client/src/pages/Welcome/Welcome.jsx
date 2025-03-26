@@ -4,6 +4,7 @@ import Button from "../../components/Button/Button";
 import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
 import { useAuth } from "../../context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import SEO from "../../components/SEO/SEO";
 
 const Welcome = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -40,8 +41,26 @@ const Welcome = () => {
     setRememberMe(false);
   };
 
+  const seoTitle = isLoginForm ? "Login" : "Create Account";
+  const seoDescription = isLoginForm
+    ? "Log in to your Ques.AI account to manage and repurpose your podcast content."
+    : "Create a Ques.AI account to start managing and repurposing your podcast content.";
+  const seoKeywords = [
+    "login",
+    "signup",
+    "account",
+    "podcast management",
+    "content repurposing",
+  ];
+
   return (
     <div className={styles.container}>
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        keywords={seoKeywords}
+      />
+
       <Toaster position="top-right" />
 
       {/* Left Panel */}
@@ -136,12 +155,13 @@ const Welcome = () => {
               <Button
                 fullWidth
                 bgColor="white"
-                textColor="#333"
+                textColor="#3C3C3C"
                 strokeColor="#ccc"
-                icon={<GoogleIcon width={16} height={16} />}
+                icon={<GoogleIcon width={30} height={30} />}
                 onClick={() => console.log("Continue with Google")}
                 type="button"
                 disabled={loading}
+                className={styles.googleBtn}
               >
                 Continue with Google
               </Button>
@@ -201,10 +221,11 @@ const Welcome = () => {
                 bgColor="white"
                 textColor="#333"
                 strokeColor="#ccc"
-                icon={<GoogleIcon width={16} height={16} />}
+                icon={<GoogleIcon width={30} height={30} />}
                 onClick={() => console.log("Continue with Google")}
                 type="button"
                 disabled={loading}
+                className={styles.googleBtn}
               >
                 Sign up with Google
               </Button>

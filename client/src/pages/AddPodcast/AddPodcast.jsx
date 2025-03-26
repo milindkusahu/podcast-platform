@@ -16,6 +16,7 @@ import IMAGES from "../../config/paths";
 import { episodeService } from "../../api/episodeService";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
+import SEO from "../../components/SEO/SEO";
 
 const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   const { projectId } = useParams();
@@ -30,14 +31,12 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   const [loading, setLoading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  // Mock user data
   const userData = {
     username: user?.username || "User",
     email: user?.email || "user@example.com",
     avatar: IMAGES.AVATAR,
   };
 
-  // Fetch episodes when component mounts
   useEffect(() => {
     if (projectId) {
       fetchEpisodes();
@@ -49,7 +48,6 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
       setLoading(true);
       const episodes = await episodeService.getEpisodesByProjectId(projectId);
 
-      // Transform episodes to match our UI format
       const formattedEpisodes = episodes.map((episode) => ({
         id: episode._id,
         name: episode.title,
@@ -84,9 +82,9 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   };
 
   const breadcrumbItems = [
-    { label: "Home Page", path: "/" },
-    { label: "Projects", path: "/projects" },
-    { label: projectName, path: "#" },
+    { label: "Home Page", path: "/projects" },
+    { label: projectName, path: `/projects/${projectId}` },
+    { label: "Add your podcast", path: "#" },
   ];
 
   const handleRSSSelect = () => {
@@ -144,7 +142,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
         title: data.name,
         project: projectId,
         source: "YouTube",
-        sourceUrl: data.name, // Using name as URL for simplicity
+        sourceUrl: data.name,
         transcript: data.transcript || "",
       };
 
@@ -178,7 +176,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
         title: data.name,
         project: projectId,
         source: "RSS",
-        sourceUrl: data.name, // Using name as URL for simplicity
+        sourceUrl: data.name,
         transcript: data.transcript || "",
       };
 
@@ -371,6 +369,12 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
 
   return (
     <div className={styles.pageContainer}>
+      <SEO
+        title={`Add Podcast - ${projectName}`}
+        description="Add and manage podcast episodes for your project"
+        keywords={["podcast", "episodes", "upload", "transcription"]}
+      />
+
       <Sidebar
         username={userData.username}
         email={userData.email}
