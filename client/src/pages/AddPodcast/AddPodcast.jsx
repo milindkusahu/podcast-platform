@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import PodcastSourceCard from "../../components/PodcastSourceCard/PodcastSourceCard";
@@ -12,10 +13,11 @@ import { NotificationIcon2, UploadIcon, LogoutIcon } from "../../utils/icons";
 import styles from "./AddPodcast.module.css";
 import Button from "../../components/Button/Button";
 import IMAGES from "../../config/paths";
-import { useNavigate } from "react-router-dom";
+import { episodeService } from "../../api/episodeService";
+import toast from "react-hot-toast";
 
 const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
-  const navigate = useNavigate();
+  const { projectId } = useParams();
   const [showYouTubeModal, setShowYouTubeModal] = useState(false);
   const [showRSSModal, setShowRSSModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -23,33 +25,57 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
   const [viewingTranscript, setViewingTranscript] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showingAccountSettings, setShowingAccountSettings] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  const [uploadedFiles, setUploadedFiles] = useState([
-    {
-      id: "file-1",
-      name: "THE SIDEPOD S2 EPISODE 15",
-      uploadDate: "25 Oct 23 | 09:04",
-      transcript: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`,
-    },
-    {
-      id: "file-2",
-      name: "THE SIDEPOD S2 EPISODE 17",
-      uploadDate: "27 Oct 23 | 11:08",
-      transcript: "This is the transcript for episode 17",
-    },
-    {
-      id: "file-3",
-      name: "THE SIDEPOD S2 EPISODE 20",
-      uploadDate: "31 Oct 23 | 20:28",
-      transcript: "This is the transcript for episode 20",
-    },
-  ]);
-
-  // Mock user data
   const userData = {
     username: "alphauser",
     email: "alphauser@gmail.com",
     avatar: IMAGES.AVATAR,
+  };
+
+  useEffect(() => {
+    if (projectId) {
+      fetchEpisodes();
+    }
+  }, [projectId]);
+
+  const fetchEpisodes = async () => {
+    try {
+      setLoading(true);
+      const episodes = await episodeService.getEpisodesByProjectId(projectId);
+
+      const formattedEpisodes = episodes.map((episode) => ({
+        id: episode._id,
+        name: episode.title,
+        transcript: episode.transcript || "",
+        uploadDate: formatDate(episode.createdAt),
+        source: episode.source,
+        sourceUrl: episode.sourceUrl || "",
+      }));
+
+      setUploadedFiles(formattedEpisodes);
+    } catch (error) {
+      console.error("Error fetching episodes:", error);
+      toast.error("Failed to load episodes");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+    return date
+      .toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+      .replace(",", " |");
   };
 
   const breadcrumbItems = [
@@ -71,64 +97,106 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
     setShowUploadModal(true);
   };
 
-  const handleFileUpload = (data) => {
-    const newFile = {
-      id: `file-${Date.now()}`,
-      name: data.name,
-      transcript: data.transcript || "",
-      uploadDate: new Date()
-        .toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-        .replace(",", " |"),
-    };
+  const handleFileUpload = async (data) => {
+    try {
+      setLoading(true);
 
-    setUploadedFiles([...uploadedFiles, newFile]);
-    setShowUploadModal(false);
+      const episodeData = {
+        title: data.name,
+        project: projectId,
+        source: "Manual",
+        sourceUrl: "",
+        transcript: data.transcript || "",
+      };
+
+      const newEpisode = await episodeService.createEpisode(episodeData);
+
+      const formattedEpisode = {
+        id: newEpisode._id,
+        name: newEpisode.title,
+        transcript: newEpisode.transcript || "",
+        uploadDate: formatDate(newEpisode.createdAt),
+        source: newEpisode.source,
+        sourceUrl: newEpisode.sourceUrl || "",
+      };
+
+      setUploadedFiles([...uploadedFiles, formattedEpisode]);
+      setShowUploadModal(false);
+      toast.success("File uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast.error("Failed to upload file");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleYouTubeUpload = (data) => {
-    const newFile = {
-      id: `yt-${Date.now()}`,
-      name: data.name,
-      transcript: data.transcript || "",
-      uploadDate: new Date()
-        .toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-        .replace(",", " |"),
-    };
+  const handleYouTubeUpload = async (data) => {
+    try {
+      setLoading(true);
 
-    setUploadedFiles([...uploadedFiles, newFile]);
-    setShowYouTubeModal(false);
+      const episodeData = {
+        title: data.name,
+        project: projectId,
+        source: "YouTube",
+        sourceUrl: data.name,
+        transcript: data.transcript || "",
+      };
+
+      const newEpisode = await episodeService.createEpisode(episodeData);
+
+      const formattedEpisode = {
+        id: newEpisode._id,
+        name: newEpisode.title,
+        transcript: newEpisode.transcript || "",
+        uploadDate: formatDate(newEpisode.createdAt),
+        source: newEpisode.source,
+        sourceUrl: newEpisode.sourceUrl,
+      };
+
+      setUploadedFiles([...uploadedFiles, formattedEpisode]);
+      setShowYouTubeModal(false);
+      toast.success("YouTube content added successfully");
+    } catch (error) {
+      console.error("Error adding YouTube content:", error);
+      toast.error("Failed to add YouTube content");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRSSUpload = (data) => {
-    const newFile = {
-      id: `rss-${Date.now()}`,
-      name: data.name,
-      transcript: data.transcript || "",
-      uploadDate: new Date()
-        .toLocaleString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-        .replace(",", " |"),
-    };
+  const handleRSSUpload = async (data) => {
+    try {
+      setLoading(true);
 
-    setUploadedFiles([...uploadedFiles, newFile]);
-    setShowRSSModal(false);
+      const episodeData = {
+        title: data.name,
+        project: projectId,
+        source: "RSS",
+        sourceUrl: data.name,
+        transcript: data.transcript || "",
+      };
+
+      const newEpisode = await episodeService.createEpisode(episodeData);
+
+      const formattedEpisode = {
+        id: newEpisode._id,
+        name: newEpisode.title,
+        transcript: newEpisode.transcript || "",
+        uploadDate: formatDate(newEpisode.createdAt),
+        source: newEpisode.source,
+        sourceUrl: newEpisode.sourceUrl,
+      };
+
+      setUploadedFiles([...uploadedFiles, formattedEpisode]);
+      setShowRSSModal(false);
+      toast.success("RSS feed added successfully");
+    } catch (error) {
+      console.error("Error adding RSS feed:", error);
+      toast.error("Failed to add RSS feed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleViewFile = (file) => {
@@ -137,26 +205,50 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
     setShowingAccountSettings(false);
   };
 
-  const handleDeleteFile = (file) => {
-    console.log("Deleting file:", file);
-    setUploadedFiles(uploadedFiles.filter((f) => f.id !== file.id));
+  const handleDeleteFile = async (file) => {
+    try {
+      setLoading(true);
+      await episodeService.deleteEpisode(file.id);
 
-    if (selectedFile && selectedFile.id === file.id) {
-      setViewingTranscript(false);
-      setSelectedFile(null);
+      setUploadedFiles(uploadedFiles.filter((f) => f.id !== file.id));
+      toast.success("Episode deleted successfully");
+
+      if (selectedFile && selectedFile.id === file.id) {
+        setViewingTranscript(false);
+        setSelectedFile(null);
+      }
+    } catch (error) {
+      console.error("Error deleting episode:", error);
+      toast.error("Failed to delete episode");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSaveTranscript = (updatedTranscript) => {
-    const updatedFiles = uploadedFiles.map((file) => {
-      if (file.id === selectedFile.id) {
-        return { ...file, transcript: updatedTranscript };
-      }
-      return file;
-    });
+  const handleSaveTranscript = async (updatedTranscript) => {
+    try {
+      setLoading(true);
 
-    setUploadedFiles(updatedFiles);
-    setSelectedFile({ ...selectedFile, transcript: updatedTranscript });
+      await episodeService.updateEpisode(selectedFile.id, {
+        transcript: updatedTranscript,
+      });
+
+      const updatedFiles = uploadedFiles.map((file) => {
+        if (file.id === selectedFile.id) {
+          return { ...file, transcript: updatedTranscript };
+        }
+        return file;
+      });
+
+      setUploadedFiles(updatedFiles);
+      setSelectedFile({ ...selectedFile, transcript: updatedTranscript });
+      toast.success("Transcript updated successfully");
+    } catch (error) {
+      console.error("Error updating transcript:", error);
+      toast.error("Failed to update transcript");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBackFromTranscript = () => {
@@ -178,14 +270,14 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
     <div className={styles.cardsContainer}>
       <PodcastSourceCard
         title="RSS Feed"
-        description="Lorem ipsum dolor sit. Dolor lorem sit."
+        description="Import podcast episodes directly from an RSS feed."
         icon={<img src={IMAGES.RSS} alt="RSS Feed" width="64" height="64" />}
         onClick={handleRSSSelect}
       />
 
       <PodcastSourceCard
         title="Youtube Video"
-        description="Lorem ipsum dolor sit. Dolor lorem sit."
+        description="Import content from YouTube videos with automatic transcription."
         icon={
           <img
             src={IMAGES.YOUTUBE}
@@ -199,7 +291,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
 
       <PodcastSourceCard
         title="Upload Files"
-        description="Lorem ipsum dolor sit. Dolor lorem sit."
+        description="Upload audio, video, or transcript files directly."
         icon={
           <img src={IMAGES.UPLOAD} alt="Upload Files" width="64" height="64" />
         }
@@ -234,7 +326,11 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
 
         {renderSourceCards()}
 
-        {!hasUploadedFiles && (
+        {loading && !hasUploadedFiles && (
+          <div className={styles.loadingContainer}>Loading episodes...</div>
+        )}
+
+        {!loading && !hasUploadedFiles && (
           <div className={styles.fileDropContainer}>
             <UploadIcon width={100} height={100} color="var(--primary-color)" />
             <div className={styles.dropText}>
@@ -253,6 +349,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
               hoverTextColor="white"
               radius="50px"
               className={styles.selectFileButton}
+              onClick={handleUploadSelect}
             >
               Select File
             </Button>
@@ -263,6 +360,7 @@ const AddPodcast = ({ projectName = "Sample Project", onLogout }) => {
           files={uploadedFiles}
           onView={handleViewFile}
           onDelete={handleDeleteFile}
+          loading={loading}
         />
       </>
     );

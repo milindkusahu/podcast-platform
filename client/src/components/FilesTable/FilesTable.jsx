@@ -1,7 +1,16 @@
 import React from "react";
 import styles from "./FilesTable.module.css";
 
-const FilesTable = ({ files = [], onView, onDelete }) => {
+const FilesTable = ({ files = [], onView, onDelete, loading = false }) => {
+  if (loading) {
+    return (
+      <div className={styles.tableContainer}>
+        <h2 className={styles.title}>Your Files</h2>
+        <div className={styles.loadingMessage}>Loading files...</div>
+      </div>
+    );
+  }
+
   if (!files || files.length === 0) {
     return null;
   }

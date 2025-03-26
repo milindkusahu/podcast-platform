@@ -100,6 +100,19 @@
   margin: 2rem 0;
 }
 
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 2rem 0;
+  font-size: 1.2rem;
+  color: #666;
+}
+
 @media (max-width: 768px) {
   .pageContainer {
     flex-direction: column;
