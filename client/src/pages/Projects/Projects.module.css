@@ -30,6 +30,17 @@
   font-weight: bold;
 }
 
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 4rem;
+  min-height: 200px;
+  text-align: center;
+}
+
 .projectsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

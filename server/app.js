@@ -16,7 +16,8 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
     credentials: true,
   })
 );

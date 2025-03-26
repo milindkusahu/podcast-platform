@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "./pages/Welcome/Welcome";
 import CreateProject from "./pages/CreateProject/CreateProject";
@@ -46,12 +46,7 @@ function App() {
           path="/projects"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
-              <Projects
-                projects={projects}
-                onSelectProject={selectProject}
-                onLogout={logout}
-                onCreateProject={createProject}
-              />
+              <Projects onLogout={logout} />
             </ProtectedRoute>
           }
         />

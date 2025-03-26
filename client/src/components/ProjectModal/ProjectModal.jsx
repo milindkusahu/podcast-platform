@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Button from "../../components/Button/Button";
 import styles from "./ProjectModal.module.css";
+import { useProjects } from "../../context/ProjectContext";
 
 const ProjectModal = ({ onClose, onSubmit }) => {
   const [projectName, setProjectName] = useState("");
   const [error, setError] = useState("");
+  const { loading } = useProjects();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,6 +43,7 @@ const ProjectModal = ({ onClose, onSubmit }) => {
               onChange={handleChange}
               placeholder="Type here"
               className={styles.input}
+              disabled={loading}
             />
             {error && <p className={styles.errorText}>{error}</p>}
           </div>
@@ -50,6 +53,7 @@ const ProjectModal = ({ onClose, onSubmit }) => {
               type="button"
               onClick={onClose}
               className={styles.cancelButton}
+              disabled={loading}
             >
               Cancel
             </button>
@@ -59,8 +63,9 @@ const ProjectModal = ({ onClose, onSubmit }) => {
               textColor="white"
               radius="10px"
               className={styles.createButton}
+              disabled={loading}
             >
-              Create
+              {loading ? "Creating..." : "Create"}
             </Button>
           </div>
         </form>
