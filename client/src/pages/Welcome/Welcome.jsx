@@ -5,6 +5,7 @@ import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
 import { useAuth } from "../../context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import backgroundWaves from "../../assets/background-waves.svg";
+import SEO from "../../components/SEO/SEO";
 
 const Welcome = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -43,6 +44,13 @@ const Welcome = () => {
 
   return (
     <div className={styles.container}>
+      <SEO
+        title="Ques.AI | AI-Powered Podcast Distribution!"
+        description="Transform your podcasting journey with Ques.AI. Supercharge your distribution using our advanced AI assistant and make your podcast more than just a hobby."
+        keywords="podcast assistant, AI podcast, podcast distribution, content creation, podcast growth"
+        ogType="website"
+      />
+
       <Toaster position="bottom-center" />
 
       {/* Left Panel */}

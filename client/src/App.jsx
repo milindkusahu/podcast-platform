@@ -8,7 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { useProjects } from "./context/ProjectContext";
 import ProjectRouteHelper from "./components/ProjectRouteHelper/ProjectRouteHelper";
-
+import SEO from "./components/SEO/SEO";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -24,6 +24,8 @@ function App() {
 
   return (
     <div className="app">
+      <SEO />
+
       <Toaster position="bottom-center" />
 
       <Routes>
