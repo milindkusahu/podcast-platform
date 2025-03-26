@@ -1,28 +1,34 @@
 import React, { useState } from "react";
 import styles from "./Welcome.module.css";
-import Button from "../../components/common/Button/Button";
+import Button from "../../components/Button/Button";
 import { GoogleIcon, WhiteLogo, MainLogo } from "../../utils/icons";
+import { useAuth } from "../../context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
-const Welcome = ({ onLogin, onSignup }) => {
+const Welcome = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleLogin = (e) => {
+  const { login, signup, loading } = useAuth();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login with:", { email, password, rememberMe });
-    if (onLogin) {
-      onLogin({ email, password, rememberMe });
-    }
+    await login({ email, password, rememberMe });
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Signup with:", { name, email, password });
-    if (onSignup) {
-      onSignup({ name, email, password });
+    try {
+      await signup({ name, email, password });
+
+      setIsLoginForm(true);
+
+      setPassword("");
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -36,6 +42,8 @@ const Welcome = ({ onLogin, onSignup }) => {
 
   return (
     <div className={styles.container}>
+      <Toaster position="top-right" />
+
       {/* Left Panel */}
       <div className={styles.leftPanel}>
         <div className={styles.logoContainer}>
@@ -116,8 +124,9 @@ const Welcome = ({ onLogin, onSignup }) => {
                 bgColor="var(--primary-color)"
                 textColor="white"
                 type="submit"
+                disabled={loading}
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </Button>
 
               <div className={styles.divider}>
@@ -132,6 +141,7 @@ const Welcome = ({ onLogin, onSignup }) => {
                 icon={<GoogleIcon width={16} height={16} />}
                 onClick={() => console.log("Continue with Google")}
                 type="button"
+                disabled={loading}
               >
                 Continue with Google
               </Button>
@@ -177,8 +187,9 @@ const Welcome = ({ onLogin, onSignup }) => {
                 bgColor="var(--primary-color)"
                 textColor="white"
                 type="submit"
+                disabled={loading}
               >
-                Create Account
+                {loading ? "Creating Account..." : "Create Account"}
               </Button>
 
               <div className={styles.divider}>
@@ -193,6 +204,7 @@ const Welcome = ({ onLogin, onSignup }) => {
                 icon={<GoogleIcon width={16} height={16} />}
                 onClick={() => console.log("Continue with Google")}
                 type="button"
+                disabled={loading}
               >
                 Sign up with Google
               </Button>

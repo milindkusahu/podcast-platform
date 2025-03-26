@@ -8,9 +8,10 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { useProjects } from "./context/ProjectContext";
 import ProjectRouteHelper from "./components/ProjectRouteHelper/ProjectRouteHelper";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const {
     projects,
     createProject,
@@ -21,20 +22,14 @@ function App() {
 
   return (
     <div className="app">
+      <Toaster position="top-right" />
+
       <Routes>
-        {/* Public route - Login page */}
         <Route
           path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/create-project" />
-            ) : (
-              <Welcome onLogin={login} />
-            )
-          }
+          element={isLoggedIn ? <Navigate to="/create-project" /> : <Welcome />}
         />
 
-        {/* Protected routes - require authentication */}
         <Route
           path="/create-project"
           element={
