@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userProfile);
 
       toast.success("Successfully logged in!");
+
       navigate("/create-project");
     } catch (error) {
       console.error("Login error:", error);

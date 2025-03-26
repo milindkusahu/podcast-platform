@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "./pages/Welcome/Welcome";
 import CreateProject from "./pages/CreateProject/CreateProject";
@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { useProjects } from "./context/ProjectContext";
 import ProjectRouteHelper from "./components/ProjectRouteHelper/ProjectRouteHelper";
+
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     selectProject,
     selectedProject,
     setSelectedProject,
+    loading,
   } = useProjects();
 
   return (
@@ -34,10 +36,14 @@ function App() {
           path="/create-project"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
-              <CreateProject
-                onCreateProject={createProject}
-                onLogout={logout}
-              />
+              {!loading && projects.length > 0 ? (
+                <Navigate to="/projects" />
+              ) : (
+                <CreateProject
+                  onCreateProject={createProject}
+                  onLogout={logout}
+                />
+              )}
             </ProtectedRoute>
           }
         />

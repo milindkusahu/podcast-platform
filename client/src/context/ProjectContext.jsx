@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { projectService } from "../api/projectService";
 import toast from "react-hot-toast";
@@ -19,10 +13,14 @@ export const ProjectProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const fetchProjects = useCallback(async () => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (token) {
+      fetchProjects();
+    }
+  }, []);
 
+  const fetchProjects = async () => {
     try {
       setLoading(true);
       const projectsData = await projectService.getAllProjects();
@@ -43,11 +41,7 @@ export const ProjectProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+  };
 
   const createProject = async (projectName) => {
     try {
@@ -71,6 +65,7 @@ export const ProjectProvider = ({ children }) => {
 
       setProjects([...projects, formattedProject]);
       toast.success("Project created successfully!");
+
       navigate("/projects");
     } catch (error) {
       console.error("Error creating project:", error);
