@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "app.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    },
+    "app.js": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
@@ -18,11 +22,5 @@
         "Access-Control-Allow-Credentials": "true"
       }
     }
-  ],
-  "functions": {
-    "app.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  }
+  ]
 }
