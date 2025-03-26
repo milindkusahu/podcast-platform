@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../../../components/common/Button/Button";
+import Button from "../../../components/Button/Button";
 import { UploadIcon } from "../../../utils/icons";
 import styles from "./UploadFilesModal.module.css";
 import IMAGES from "../../../config/paths";

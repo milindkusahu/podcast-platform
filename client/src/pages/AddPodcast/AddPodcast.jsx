@@ -10,7 +10,7 @@ import EditTranscript from "../../components/EditTranscript/EditTranscript";
 import AccountSettings from "../../components/AccountSettings/AccountSettings";
 import { NotificationIcon2, UploadIcon, LogoutIcon } from "../../utils/icons";
 import styles from "./AddPodcast.module.css";
-import Button from "../../components/common/Button/Button";
+import Button from "../../components/Button/Button";
 import IMAGES from "../../config/paths";
 import { useNavigate } from "react-router-dom";
 

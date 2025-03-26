@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowLeftIcon } from "../../utils/icons";
 import styles from "./AccountSettings.module.css";
-import Button from "../common/Button/Button";
+import Button from "../Button/Button";
 
 const AccountSettings = ({ user, onBack }) => {
   const { username, email, avatar } = user;

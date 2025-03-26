@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "../../utils/icons";
 import styles from "./EditTranscript.module.css";
-import Button from "../common/Button/Button";
+import Button from "../Button/Button";
 
 const EditTranscript = ({ transcript, onBack, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);

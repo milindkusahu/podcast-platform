@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../../../components/common/Button/Button";
+import Button from "../../../components/Button/Button";
 import styles from "./RSSFeedModal.module.css";
 import IMAGES from "../../../config/paths";
 

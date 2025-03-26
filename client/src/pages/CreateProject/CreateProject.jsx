@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../components/Header/Header";
-import Button from "../../components/common/Button/Button";
+import Button from "../../components/Button/Button";
 import ProjectModal from "../../components/ProjectModal/ProjectModal";
 import { PlusIcon } from "../../utils/icons";
 import styles from "./CreateProject.module.css";
