@@ -48,38 +48,27 @@ const Projects = ({ projects = [], onCreateProject, onSelectProject }) => {
         </div>
 
         <div className={styles.projectsGrid}>
-          {projects.length > 0 ? (
-            projects.map((project) => (
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              className={styles.projectCard}
+              onClick={() => handleProjectClick(project)}
+            >
               <div
-                key={project.id}
-                className={styles.projectCard}
-                onClick={() => handleProjectClick(project)}
+                className={styles.projectIcon}
+                style={{ backgroundColor: project.color }}
               >
-                <div
-                  className={styles.projectIcon}
-                  style={{ backgroundColor: project.color }}
-                >
-                  <span className={styles.initials}>{project.initials}</span>
-                </div>
-                <div className={styles.projectInfo}>
-                  <h3 className={styles.projectName}>{project.name}</h3>
-                  <p className={styles.projectFiles}>{project.files} Files</p>
-                  <p className={styles.projectLastEdited}>
-                    Last edited {project.lastEdited}
-                  </p>
-                </div>
+                <span className={styles.initials}>{project.initials}</span>
               </div>
-            ))
-          ) : (
-            <div className={styles.emptyState}>
-              <div className={styles.emptyStateContent}>
-                <p className={styles.emptyStateText}>No projects yet</p>
-                <p className={styles.emptyStateSubtext}>
-                  Click "Create New Project" to get started
+              <div className={styles.projectInfo}>
+                <h3 className={styles.projectName}>{project.name}</h3>
+                <p className={styles.projectFiles}>{project.files} Files</p>
+                <p className={styles.projectLastEdited}>
+                  Last edited {project.lastEdited}
                 </p>
               </div>
             </div>
-          )}
+          ))}
         </div>
       </main>
 
